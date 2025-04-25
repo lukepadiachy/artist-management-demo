@@ -9,15 +9,30 @@ public partial class MainPage : ContentPage
     private readonly DatabaseService _databaseService;
     public ObservableCollection<Artist> Artists { get; set; } = new();
 
+    private int _artistCount;
+    public int ArtistCount
+    {
+        get => _artistCount;
+        set
+        {
+            if (_artistCount != value)
+            {
+                _artistCount = value;
+                OnPropertyChanged(nameof(ArtistCount));
+            }
+        }
+    }
+
     public MainPage(DatabaseService databaseService)
     {
         InitializeComponent();
         _databaseService = databaseService;
         BindingContext = this;
-        LoadArtists();
+        Artists.CollectionChanged += (s, e) => ArtistCount = Artists.Count;
+        _ = LoadArtists();
     }
 
-    private async void LoadArtists()
+    private async Task LoadArtists()
     {
         var artists = await _databaseService.GetArtistsAsync();
         Artists.Clear();
@@ -50,7 +65,7 @@ public partial class MainPage : ContentPage
         };
 
         await _databaseService.SaveArtistAsync(artist);
-        LoadArtists();
+        await LoadArtists();
 
         // Clear the form
         NameEntry.Text = string.Empty;
@@ -72,7 +87,7 @@ public partial class MainPage : ContentPage
             if (answer)
             {
                 await _databaseService.DeleteArtistAsync(artist);
-                LoadArtists();
+                await LoadArtists();
             }
         }
     }
