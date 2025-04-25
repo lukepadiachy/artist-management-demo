@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ArtistManagement.MainPage">
+             xmlns:viewmodels="clr-namespace:ArtistManagement.ViewModels"
+             xmlns:models="clr-namespace:ArtistManagement.Models"
+             x:Class="ArtistManagement.MainPage"
+             x:DataType="viewmodels:MainPageViewModel">
 
     <ScrollView>
         <VerticalStackLayout Spacing="10" Padding="20">
@@ -15,31 +18,35 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Entry x:Name="NameEntry" 
+                <Entry Text="{Binding ArtistName}"
                        Placeholder="Artist Name" 
                        Grid.Row="0" Grid.Column="0"/>
                 
-                <Entry x:Name="GenreEntry" 
+                <Entry Text="{Binding Genre}"
                        Placeholder="Genre" 
                        Grid.Row="0" Grid.Column="1"/>
                 
-                <Entry x:Name="AlbumsSoldEntry" 
+                <Entry Text="{Binding AlbumsSold}"
                        Placeholder="Albums Sold" 
                        Keyboard="Numeric"
                        Grid.Row="1" Grid.Column="0"/>
                 
-                <DatePicker x:Name="ContractEndDatePicker"
+                <DatePicker Date="{Binding ContractEndDate}"
                            Grid.Row="1" Grid.Column="1"/>
             </Grid>
 
             <Button Text="Add Artist"
-                    Clicked="OnAddArtistClicked"
+                    Command="{Binding AddArtistCommand}"
                     HorizontalOptions="Fill"/>
 
-            <CollectionView x:Name="ArtistsCollection"
-                          ItemsSource="{Binding Artists}">
+            <Label Text="{Binding ArtistCount, StringFormat='Total Artists: {0}'}"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   Margin="0,10,0,5"/>
+
+            <CollectionView ItemsSource="{Binding Artists}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:Artist">
                         <Grid Padding="5" ColumnSpacing="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -68,17 +75,12 @@
                             <Button Text="Delete"
                                     Grid.Column="1"
                                     VerticalOptions="Center"
-                                    Clicked="OnDeleteClicked"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=DeleteArtistCommand}"
                                     CommandParameter="{Binding .}"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-            <Label Text="{Binding ArtistCount, StringFormat='Total Artists: {0}'}"
-                   FontSize="16"
-                   FontAttributes="Bold"
-                   Margin="0,10,0,5"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

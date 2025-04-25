@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using ArtistManagement.Services;
+using ArtistManagement.ViewModels;
 
 namespace ArtistManagement;
 
@@ -17,6 +18,7 @@ public static class MauiProgram
             });
 
         builder.Services.AddSingleton<DatabaseService>();
+        builder.Services.AddTransient<MainPageViewModel>();
         builder.Services.AddTransient<MainPage>();
 
 #if DEBUG
