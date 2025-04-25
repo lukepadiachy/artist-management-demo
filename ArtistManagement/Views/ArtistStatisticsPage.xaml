@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ArtistManagement.ViewModels"
+             x:Class="ArtistManagement.Views.ArtistStatisticsPage"
+             Title="Artist Statistics"
+             x:DataType="viewmodels:ArtistStatisticsViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*" 
+          Padding="20"
+          RowSpacing="20">
+
+        <Picker Grid.Row="0"
+                Title="Select Filter"
+                ItemsSource="{Binding AvailableFilters}"
+                SelectedItem="{Binding SelectedFilter, Mode=TwoWay}"
+                HorizontalOptions="Fill"/>
+
+        <Label Grid.Row="1"
+               Text="{Binding FilterSummary}"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+        <ScrollView Grid.Row="2">
+            <CollectionView ItemsSource="{Binding FilterResults}"
+                          SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Label Text="{Binding}"
+                               Margin="0,5"
+                               FontSize="16"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </Grid>
+</ContentPage>

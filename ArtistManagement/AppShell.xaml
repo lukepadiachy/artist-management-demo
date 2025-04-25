@@ -4,12 +4,20 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ArtistManagement"
+    xmlns:views="clr-namespace:ArtistManagement.Views"
     Shell.FlyoutBehavior="Flyout"
-    Title="ArtistManagement">
+    Title="Artist Management">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <FlyoutItem Title="Artists">
+        <ShellContent
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Statistics">
+        <ShellContent
+            ContentTemplate="{DataTemplate views:ArtistStatisticsPage}"
+            Route="Statistics" />
+    </FlyoutItem>
 
 </Shell>
